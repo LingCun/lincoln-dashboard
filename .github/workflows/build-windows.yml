@@ -1,11 +1,14 @@
 name: Build Windows exe
 
 # 실행 방법:
-#  1) 수동: GitHub → Actions → "Build Windows exe" → Run workflow
-#  2) 태그: git tag v0.1.0 && git push origin v0.1.0  (자동으로 Release 생성)
+#  1) 자동: 기본 브랜치에 머지되면 exe 빌드가 자동 실행됨
+#  2) 수동: GitHub → Actions → "Build Windows exe" → Run workflow
+#  3) 태그: git tag v0.1.0 && git push origin v0.1.0  (자동으로 Release 생성)
 on:
   workflow_dispatch:
   push:
+    branches:
+      - claude/korean-project-setup-e4qi5p
     tags:
       - 'v*'
 
