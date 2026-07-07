@@ -8,6 +8,7 @@ import { NotesWidget } from './widgets/NotesWidget'
 import { BookmarksWidget } from './widgets/BookmarksWidget'
 import { QuoteWidget } from './widgets/QuoteWidget'
 import { PomodoroWidget } from './widgets/PomodoroWidget'
+import { DesktopPet } from './components/DesktopPet'
 
 export default function App() {
   const { theme, toggle } = useTheme()
@@ -81,6 +82,8 @@ export default function App() {
           모든 데이터는 브라우저에만 저장됩니다 · Lincoln Dashboard
         </footer>
       </div>
+
+      <DesktopPet />
     </div>
   )
 }
