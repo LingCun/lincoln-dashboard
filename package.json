@@ -34,6 +34,7 @@
   "build": {
     "appId": "com.lincoln.desktoppet",
     "productName": "Desktop Pet",
+    "icon": "build/icon.png",
     "files": [
       "dist/**",
       "electron/**"
@@ -42,7 +43,22 @@
       "output": "release"
     },
     "mac": { "target": "dmg" },
-    "win": { "target": "nsis" },
-    "linux": { "target": "AppImage" }
+    "linux": { "target": "AppImage" },
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Desktop Pet"
+    },
+    "portable": {
+      "artifactName": "DesktopPet-portable-${version}.exe"
+    }
   }
 }
