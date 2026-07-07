@@ -237,6 +237,26 @@ export function DesktopPet() {
     let downX = 0
     let downY = 0
 
+    // Electron: 투명 창은 클릭 통과(ignoreMouseEvents) 상태로 두고,
+    // 커서가 캐릭터 위에 있을 때만 상호작용을 켠다.
+    const pet = window.desktopPet
+    let interactive = false
+    const setInteractive = (on: boolean) => {
+      if (!pet || interactive === on) return
+      interactive = on
+      pet.setInteractive(on)
+    }
+    const overPet = (x: number, y: number) => {
+      const hit = document.elementFromPoint(x, y)
+      return !!hit && !!hit.closest('.pet')
+    }
+    const onHover = (e: MouseEvent) => {
+      // 드래그 중에는 항상 상호작용 유지
+      if (pointerId !== null) return
+      setInteractive(overPet(e.clientX, e.clientY))
+    }
+    if (pet) window.addEventListener('mousemove', onHover)
+
     const onDown = (e: PointerEvent) => {
       pointerId = e.pointerId
       moved = false
@@ -298,6 +318,9 @@ export function DesktopPet() {
     window.addEventListener('pointermove', onMove)
     window.addEventListener('pointerup', onUp)
     window.addEventListener('resize', onResize)
+    el?.addEventListener('pointerleave', () => {
+      if (pointerId === null) setInteractive(false)
+    })
 
     // 눈 깜빡임
     const blinkTimer = window.setInterval(() => {
@@ -319,6 +342,7 @@ export function DesktopPet() {
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerup', onUp)
       window.removeEventListener('resize', onResize)
+      if (pet) window.removeEventListener('mousemove', onHover)
     }
   }, [])
 

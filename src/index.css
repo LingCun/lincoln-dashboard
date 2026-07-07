@@ -1,42 +1,28 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  color-scheme: light dark;
-}
+/* Desktop Pet — 캐릭터만 존재하는 투명 오버레이 */
 
 html,
 body,
 #root {
   height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow: hidden;
 }
 
 body {
-  margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* Subtle custom scrollbar for widget bodies */
-.thin-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-.thin-scroll::-webkit-scrollbar-thumb {
-  background: rgb(148 163 184 / 0.35);
-  border-radius: 9999px;
-}
-.thin-scroll::-webkit-scrollbar-track {
-  background: transparent;
 }
 
 /* ── Desktop pet (바탕화면 캐릭터) ───────────────────────────── */
 .pet-root {
   position: fixed;
   inset: 0;
-  z-index: 40;
   overflow: hidden;
   pointer-events: none;
+  background: transparent;
 }
 .pet {
   position: absolute;
@@ -80,12 +66,9 @@ body {
   height: 8px;
   margin-left: -22px;
   border-radius: 50%;
-  background: rgb(15 23 42 / 0.18);
+  background: rgb(15 23 42 / 0.22);
   filter: blur(1px);
   transition: transform 0.12s linear, opacity 0.12s linear;
-}
-.dark .pet-shadow {
-  background: rgb(0 0 0 / 0.4);
 }
 
 /* Speech / emote bubble */
