@@ -1,0 +1,52 @@
+name: Build Windows exe
+
+# 실행 방법:
+#  1) 자동: 기본 브랜치에 머지되면 exe 빌드가 자동 실행됨
+#  2) 수동: GitHub → Actions → "Build Windows exe" → Run workflow
+#  3) 태그: git tag v0.1.0 && git push origin v0.1.0  (자동으로 Release 생성)
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - claude/korean-project-setup-e4qi5p
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build renderer
+        run: npm run build
+
+      - name: Package Windows exe
+        run: npx electron-builder --win --x64 --publish never
+
+      # 만들어진 exe 를 Actions 아티팩트로 업로드 (항상)
+      - name: Upload exe artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DesktopPet-windows
+          path: |
+            release/*.exe
+          if-no-files-found: error
+
+      # 태그로 실행된 경우 GitHub Release 에 exe 첨부 (공유 링크 생성)
+      - name: Publish to Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*.exe
